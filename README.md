@@ -1,37 +1,30 @@
 # MeowUSB-BLE: M5 Cardputer DuckyScript Executor
 
-A firmware for M5 Cardputer that executes DuckyScript payloads via USB and Bluetooth, featuring a cat-themed interface.
+Firmware for M5 Cardputer that executes DuckyScript payloads via USB and Bluetooth, featuring a cat-themed interface.
 
 ## Features
 
-- **USB HID Support**: Emulate keyboard and mouse over USB
+- **USB HID Support**: Emulate keyboard over USB
 - **Bluetooth HID Support**: Wireless payload execution
 - **DuckyScript Parser**: Compatible with standard DuckyScript commands
 - **SD Card Storage**: Store and manage unlimited payloads
-- **Web Interface**: Upload and manage payloads via WiFi
-- **Cat-Themed UI**: Meow! 🐱
+- **Cat-Themed UI**: Meeowwww :3
 
 ## Installation
 
-1. Open the project in VS Code with PlatformIO extension
-2. Connect your M5 Cardputer via USB
-3. Click "Upload" to flash the firmware
+Will be uploaded to M5 Burner
 
 ## Usage
 
 ### Main Menu
-- Use **Arrow Keys** to navigate the payload list
-- Press **ENTER** to execute the selected payload via USB
-- Press **Btn B** to execute via Bluetooth
-- Press **Btn C** to enter Web Configuration mode
+- Use **Arrow Keys** , **Enter Key**, and **ESC Key** to navigate the payload list
+- Use **ENTER** to execute the selected payload via USB
+- Use **TAB** to switch between USB and BLE
+
 
 ### Adding Payloads
-1. **Via SD Card**: Save your `.txt` DuckyScript files to the `/payloads` folder on the SD card
-2. **Via Web Interface**: 
-   - Select "Web Config" from the main menu
-   - Connect to WiFi AP "M5-Ducky" (Password: `ducky123`)
-   - Open `http://192.168.4.1` in your browser
-   - Upload your script files
+1. **Via SD Card**: Save your `.txt` DuckyScript files to your SD card
+
 
 ### Supported DuckyScript Commands
 - `REM`: Comment
@@ -40,7 +33,6 @@ A firmware for M5 Cardputer that executes DuckyScript payloads via USB and Bluet
 - `STRINGLN [text]`: Type text and press Enter
 - `KEY [key]`: Press a specific key (e.g., `KEY ENTER`, `KEY F1`)
 - `KEYS [sequence]`: Press a key sequence
-- `MOUSE_MOVE [x] [y]`: Move mouse cursor
 - `MOUSE_CLICK [LEFT|RIGHT|MIDDLE]`: Click mouse button
 - `DEFAULTDELAY [ms]`: Set default delay between commands
 
