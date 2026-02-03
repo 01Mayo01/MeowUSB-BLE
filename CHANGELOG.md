@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.0.9
+- **Fix:** Fixed DuckyScript parsing for commands with tabs or multiple spaces (e.g., `GUI<tab>r`). Added robust whitespace splitting logic.
+- **Removed:** Removed all Mouse HID functionality to streamline the codebase and focus on Keyboard operations.
+- **Debug:** Added detailed serial debug logging for HID key and modifier events.
+
 ## v0.0.8
 - **Fix:** Fixed critical issue where `GUI` command (and other modifiers) would incorrectly trigger multiple modifier keys simultaneously due to bitmask overlap. Updated `DuckyScriptParser` to use unique bit flags for internal modifier tracking.
 
