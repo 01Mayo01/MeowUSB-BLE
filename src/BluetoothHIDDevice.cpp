@@ -85,17 +85,12 @@ bool BluetoothHIDDevice::begin(const String& name) {
     // Create new instance with updated name
     // Initialize with standard parameters for broader compatibility
     // Device Name, Device Manufacturer, Battery Level
+    // Use 100% battery to prevent some hosts from querying it constantly
     bleKeyboard = new BleKeyboard(deviceName.c_str(), "MeowCorp", 100);
     
-    // Set connection intervals to improve stability (min, max, latency, timeout)
-    // These values are recommended for Apple devices and general stability
-    // 12 * 1.25ms = 15ms min interval
-    // 24 * 1.25ms = 30ms max interval
-    // 0 latency
-    // 400 * 10ms = 4 seconds timeout
-    // NOTE: BleKeyboard (NimBLE version) might not expose setConnectionParams directly on the class
-    // We rely on defaults or need to access the underlying NimBLEServer
-    
+    // IMPORTANT: Delay to allow object creation to settle
+    delay(100);
+
     // Initialize with comprehensive error handling
     bool success = false;
     try {
@@ -107,35 +102,15 @@ bool BluetoothHIDDevice::begin(const String& name) {
         // Adjust advertising settings for better connection reliability
         NimBLEAdvertising* pAdvertising = NimBLEDevice::getAdvertising();
         if (pAdvertising) {
-            // Remove preferred parameters as they can cause issues with some hosts
-            // Let the host decide the interval
-            // pAdvertising->setMinPreferred(0x06);
-            // pAdvertising->setMinPreferred(0x12);
+            // Force advertising response to be true to help discovery
             pAdvertising->setScanResponse(true);
+            // Increase advertising interval to be less aggressive (helps with some Androids/Windows)
+            pAdvertising->setMinInterval(32); // 20ms
+            pAdvertising->setMaxInterval(64); // 40ms
         }
         
-        // Access underlying NimBLEServer to update connection parameters globally
-        // NOTE: updateConnParams requires a connection handle (desc->conn_handle)
-        // Since we are not connected yet, we can't update connection params for a specific peer.
-        // However, we can set the preferred parameters in the advertising packet (which we did by removing the bad ones)
-        // or wait for a connection callback to update params.
-        
-        // For NimBLE 1.4.1, we can't easily iterate peers without a connection callback.
-        // But we can set the DEFAULT connection parameters for new connections if the library supports it.
-        // NimBLEServer doesn't have a static default params setter exposed easily.
-        
-        // Instead, we will rely on the host to respect the advertising flags (or lack thereof)
-        // and if a connection is established, we can try to update params then.
-        // For now, let's remove the problematic updateConnParams call during begin()
-        // as there are no peers connected yet.
-        
-        /* 
-        NimBLEServer* pServer = NimBLEDevice::getServer();
-        if (pServer) {
-             // This fails because getPeerID(0) is not valid if no peers connected
-             // pServer->updateConnParams(pServer->getPeerID(0), 12, 24, 0, 400); 
-        }
-        */
+        // Disable strict security to prevent bonding loops
+        NimBLEDevice::setSecurityAuth(false, false, false);
         
         success = true;
         isStarted = true;

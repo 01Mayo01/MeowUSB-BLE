@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.1.5
+- **Fix:** Fixed rapid Bluetooth disconnect/reconnect loops by forcing "No Security" mode to bypass complex bonding requirements that fail on some hosts.
+- **Fix:** Adjusted BLE advertising intervals to be less aggressive (20-40ms), improving compatibility with Android and Windows.
+- **Improvement:** Removed battery service updates to prevent potential conflicts.
+
 ## v0.1.4
 - **Fix:** Fixed Bluetooth reconnection loops by relaxing connection interval requirements and allowing the host (PC/Phone) to negotiate its preferred parameters.
 - **Fix:** Removed hardcoded "Min Preferred" advertising settings which were causing some hosts to reject the connection.
