@@ -8,6 +8,7 @@ BluetoothHIDDevice::BluetoothHIDDevice() {
     bleKeyboard = nullptr; // Don't create it yet, wait for begin()
     isInitializing = false;
     isShuttingDown = false;
+    isStarted = false;
     initStartTime = 0;
 }
 
@@ -29,8 +30,15 @@ bool BluetoothHIDDevice::begin(const String& name) {
     if (bleKeyboard != nullptr) {
         if (deviceName == name) {
             Serial.println("BLE reusing existing instance: " + deviceName);
-            // Ensure advertising is started
-            bleKeyboard->begin();
+            
+            // Only start if not already started
+            if (!isStarted) {
+                bleKeyboard->begin();
+                isStarted = true;
+            } else {
+                Serial.println("BLE already running, skipping begin()");
+            }
+            
             deviceConnected = bleKeyboard->isConnected();
             return true;
         } else {
@@ -39,7 +47,11 @@ bool BluetoothHIDDevice::begin(const String& name) {
             // BleKeyboard doesn't support renaming after begin(), so we have to destroy it.
             // But to prevent crashes, we'll just stick with the old name for now if it exists.
             Serial.println("BLE name change requested but ignored to prevent instability. Using: " + deviceName);
-            bleKeyboard->begin();
+            
+            if (!isStarted) {
+                bleKeyboard->begin();
+                isStarted = true;
+            }
             return true;
         }
     }
@@ -79,6 +91,7 @@ bool BluetoothHIDDevice::begin(const String& name) {
         delay(300);
         
         success = true;
+        isStarted = true;
         Serial.println("BLE Keyboard initialized: " + deviceName);
         
         // Reset connection state
@@ -100,8 +113,10 @@ bool BluetoothHIDDevice::begin(const String& name) {
 
 void BluetoothHIDDevice::end() {
     if (bleKeyboard) {
-        bleKeyboard->end();
-        Serial.println("BLE Keyboard advertising stopped");
+        // Do NOT call bleKeyboard->end() as it causes instability
+        // bleKeyboard->end();
+        Serial.println("BLE Keyboard 'stopped' (stack kept active)");
+        // We don't change isStarted to false because the stack is still up
     }
 }
 

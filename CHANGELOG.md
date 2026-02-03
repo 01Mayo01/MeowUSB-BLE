@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.1
+- **Fix:** Fixed critical Bluetooth stability issues. Implemented robust state tracking to prevent BLE stack re-initialization crashes.
+- **Fix:** Bluetooth mode switching is now fully stable.
+
 ## v0.0.9
 - **Fix:** Fixed DuckyScript parsing for commands with tabs or multiple spaces (e.g., `GUI<tab>r`). Added robust whitespace splitting logic.
 - **Removed:** Removed all Mouse HID functionality to streamline the codebase and focus on Keyboard operations.

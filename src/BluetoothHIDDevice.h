@@ -14,6 +14,7 @@ private:
     String deviceName;
     bool isInitializing;
     bool isShuttingDown;
+    bool isStarted;
     unsigned long initStartTime;
     
 public:
