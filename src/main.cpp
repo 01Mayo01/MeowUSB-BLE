@@ -479,7 +479,7 @@ void showBootScreen() {
     
     M5Cardputer.Display.setTextColor(PINK);
     M5Cardputer.Display.println("  MeowUSB&BLE");
-    M5Cardputer.Display.println("  File Browser");
+    M5Cardputer.Display.println("  DuckyScript Parser");
     M5Cardputer.Display.setTextColor(BLUE);
     M5Cardputer.Display.println("  Loading...");
 }
