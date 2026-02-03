@@ -81,15 +81,15 @@ public:
     static const uint8_t DUCKY_LEFT = 0xD8;
     static const uint8_t DUCKY_RIGHT = 0xD7;
     
-    // Modifier constants (Arduino Keyboard.h compatible)
-    static const uint8_t MOD_CTRL_LEFT = 0x80;
-    static const uint8_t MOD_SHIFT_LEFT = 0x81;
-    static const uint8_t MOD_ALT_LEFT = 0x82;
-    static const uint8_t MOD_GUI_LEFT = 0x83;
-    static const uint8_t MOD_CTRL_RIGHT = 0x84;
-    static const uint8_t MOD_SHIFT_RIGHT = 0x85;
-    static const uint8_t MOD_ALT_RIGHT = 0x86;
-    static const uint8_t MOD_GUI_RIGHT = 0x87;
+    // Modifier constants (Bitmasks for internal use)
+    static const uint8_t MOD_CTRL_LEFT   = 0x01;
+    static const uint8_t MOD_SHIFT_LEFT  = 0x02;
+    static const uint8_t MOD_ALT_LEFT    = 0x04;
+    static const uint8_t MOD_GUI_LEFT    = 0x08;
+    static const uint8_t MOD_CTRL_RIGHT  = 0x10;
+    static const uint8_t MOD_SHIFT_RIGHT = 0x20;
+    static const uint8_t MOD_ALT_RIGHT   = 0x40;
+    static const uint8_t MOD_GUI_RIGHT   = 0x80;
 };
 
 #endif // DUCKYSCRIPT_PARSER_H
