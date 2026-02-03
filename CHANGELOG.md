@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.1.1
+- **Fix:** Switched Bluetooth stack to NimBLE-Arduino. This resolves persistent crash/instability issues associated with the default Bluedroid stack on ESP32-S3.
+- **Improvement:** Reduced memory usage and improved BLE connection speed.
+
 ## v0.1
 - **Fix:** Fixed critical Bluetooth stability issues. Implemented robust state tracking to prevent BLE stack re-initialization crashes.
 - **Fix:** Bluetooth mode switching is now fully stable.
