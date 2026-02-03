@@ -79,7 +79,7 @@ void MeowUSBDevice::sendKey(uint8_t key, uint8_t modifiers) {
 void MeowUSBDevice::sendString(const String& text) {
     if (!isConnected()) return;
     Keyboard.print(text);
-    delay(10); // Small delay after string
+    delay(20); // Small delay after string to ensure host processing
 }
 
 void MeowUSBDevice::sendKeySequence(const String& keys) {

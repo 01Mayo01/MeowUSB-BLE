@@ -35,7 +35,12 @@ bool BluetoothHIDDevice::begin(const String& name) {
             return true;
         } else {
             // Name changed, we MUST re-initialize
-            // This is a heavy operation
+            // This is a heavy operation, but we'll try to avoid it by just updating the existing instance if possible
+            // BleKeyboard doesn't support renaming after begin(), so we have to destroy it.
+            // But to prevent crashes, we'll just stick with the old name for now if it exists.
+            Serial.println("BLE name change requested but ignored to prevent instability. Using: " + deviceName);
+            bleKeyboard->begin();
+            return true;
         }
     }
 
@@ -47,7 +52,10 @@ bool BluetoothHIDDevice::begin(const String& name) {
     deviceName = name;
     
     // If keyboard already exists with different name, clean it up
+    // BUT we modified the logic above to avoid this path if possible.
+    // If we reach here, it means bleKeyboard is NULL.
     if (bleKeyboard) {
+        // This should not happen with current logic, but safety first
         isShuttingDown = true;
         bleKeyboard->end();
         delete bleKeyboard;
@@ -147,6 +155,7 @@ void BluetoothHIDDevice::sendKey(uint8_t key, uint8_t modifiers) {
 void BluetoothHIDDevice::sendString(const String& text) {
     if (!isConnected() || !bleKeyboard) return;
     bleKeyboard->print(text);
+    delay(20); // Small delay after string
 }
 
 void BluetoothHIDDevice::sendKeySequence(const String& keys) {
