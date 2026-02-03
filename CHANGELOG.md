@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.1.6
+- **Fix:** Re-enabled standard Bluetooth Security (Bonding/Encryption) with "Just Works" pairing. This fixes disconnection loops on hosts (Windows/Android) that require secure HID connections.
+- **Fix:** Set Bluetooth Tx Power to Maximum (9dBm) to rule out signal integrity issues.
+- **Change:** Updated device name suffix to "-v6" to force hosts to re-enumerate services and clear stale cache.
+
 ## v0.1.5
 - **Fix:** Fixed rapid Bluetooth disconnect/reconnect loops by forcing "No Security" mode to bypass complex bonding requirements that fail on some hosts.
 - **Fix:** Adjusted BLE advertising intervals to be less aggressive (20-40ms), improving compatibility with Android and Windows.

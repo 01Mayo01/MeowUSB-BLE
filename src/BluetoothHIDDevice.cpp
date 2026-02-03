@@ -86,7 +86,9 @@ bool BluetoothHIDDevice::begin(const String& name) {
     // Initialize with standard parameters for broader compatibility
     // Device Name, Device Manufacturer, Battery Level
     // Use 100% battery to prevent some hosts from querying it constantly
-    bleKeyboard = new BleKeyboard(deviceName.c_str(), "MeowCorp", 100);
+    // Force a new name to ensure fresh enumeration on host
+    String finalName = deviceName + "-v6"; 
+    bleKeyboard = new BleKeyboard(finalName.c_str(), "MeowCorp", 100);
     
     // IMPORTANT: Delay to allow object creation to settle
     delay(100);
@@ -109,8 +111,13 @@ bool BluetoothHIDDevice::begin(const String& name) {
             pAdvertising->setMaxInterval(64); // 40ms
         }
         
-        // Disable strict security to prevent bonding loops
-        NimBLEDevice::setSecurityAuth(false, false, false);
+        // RE-ENABLE Security: HID devices usually REQUIRE bonding/encryption
+        // Set to "Just Works" mode (No Input No Output)
+        NimBLEDevice::setSecurityAuth(true, true, true); // Auth, Encrypt, Bond
+        NimBLEDevice::setSecurityIOCap(BLE_HS_IO_NO_INPUT_OUTPUT);
+        
+        // Set Tx Power to Maximum (ESP_PWR_LVL_P9 = 9dBm)
+        NimBLEDevice::setPower(ESP_PWR_LVL_P9); 
         
         success = true;
         isStarted = true;
