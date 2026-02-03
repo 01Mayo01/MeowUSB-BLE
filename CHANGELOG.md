@@ -1,5 +1,8 @@
 # Changelog
 
+## v0.0.7
+- **Fix:** Added explicit support for `GUI`, `WINDOWS`, `COMMAND`, and `ENTER` in DuckyScript parser to ensure reliable execution.
+
 ## v0.0.6
 - **Build:** Maintenance release with updated filename convention.
 

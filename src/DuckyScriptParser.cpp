@@ -145,6 +145,15 @@ void DuckyScriptParser::executeLine(const String& line) {
         handleDEFAULTDELAY(parameters);
     } else if (command == "REM_BLOCK") {
         handleREM_BLOCK(parameters);
+    } else if (command == "GUI" || command == "WINDOWS" || command == "COMMAND") {
+        // Explicitly handle GUI command which often has parameters like "GUI r"
+        handleKEY(line);
+    } else if (command == "ENTER") {
+        // Explicitly handle ENTER
+        handleKEY("ENTER");
+    } else if (specialKeys.find(command.c_str()) != specialKeys.end() || modifiers.find(command.c_str()) != modifiers.end()) {
+        // Implicit key command (e.g., "CTRL c")
+        handleKEY(line);
     } else {
         Serial.println("Unknown command: " + command);
     }
