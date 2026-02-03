@@ -11,17 +11,13 @@ public:
     virtual void sendKey(uint8_t key, uint8_t modifiers = 0) = 0;
     virtual void sendString(const String& text) = 0;
     virtual void sendKeySequence(const String& keys) = 0;
-    virtual void moveMouse(int8_t x, int8_t y) = 0;
-    virtual void clickMouse(uint8_t buttons) = 0;
     virtual void delay(uint32_t ms) = 0;
     virtual bool isConnected() = 0;
 };
 
 // HID Modes
 enum HIDMode {
-    HID_MODE_KEYBOARD,
-    HID_MODE_MOUSE,
-    HID_MODE_COMBO
+    HID_MODE_KEYBOARD
 };
 
 class DuckyScriptParser {
@@ -47,13 +43,12 @@ private:
     void handleSTRINGLN(const String& line);
     void handleKEY(const String& line);
     void handleKEYS(const String& line);
-    void handleMOUSE_MOVE(const String& line);
-    void handleMOUSE_CLICK(const String& line);
     void handleDEFAULTDELAY(const String& line);
     
     // Utility functions
     String trim(const String& str);
     std::vector<String> split(const String& str, char delimiter);
+    std::vector<String> splitByWhitespace(const String& str);
     uint8_t parseKey(const String& keyName);
     uint8_t parseModifiers(const String& modifierStr);
     bool isWhitespace(char c);

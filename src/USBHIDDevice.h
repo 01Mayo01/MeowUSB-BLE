@@ -30,8 +30,6 @@ public:
     void sendKey(uint8_t key, uint8_t modifiers = 0) override;
     void sendString(const String& text) override;
     void sendKeySequence(const String& keys) override;
-    void moveMouse(int8_t x, int8_t y) override;
-    void clickMouse(uint8_t buttons) override;
     void delay(uint32_t ms) override;
     bool isConnected() override;
     

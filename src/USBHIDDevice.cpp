@@ -52,12 +52,17 @@ void MeowUSBDevice::setMode(HIDMode mode) {
 
 void MeowUSBDevice::sendKey(uint8_t key, uint8_t modifiers) {
     if (!isConnected()) return;
+
+    Serial.println("DEBUG: USB sendKey key=" + String(key, HEX) + " mods=" + String(modifiers, HEX));
     
     // Press modifiers
     if (modifiers & DuckyScriptParser::MOD_CTRL_LEFT) Keyboard.press(KEY_LEFT_CTRL);
     if (modifiers & DuckyScriptParser::MOD_SHIFT_LEFT) Keyboard.press(KEY_LEFT_SHIFT);
     if (modifiers & DuckyScriptParser::MOD_ALT_LEFT) Keyboard.press(KEY_LEFT_ALT);
-    if (modifiers & DuckyScriptParser::MOD_GUI_LEFT) Keyboard.press(KEY_LEFT_GUI);
+    if (modifiers & DuckyScriptParser::MOD_GUI_LEFT) {
+        Keyboard.press(KEY_LEFT_GUI);
+        Serial.println("DEBUG: Pressed KEY_LEFT_GUI");
+    }
     if (modifiers & DuckyScriptParser::MOD_CTRL_RIGHT) Keyboard.press(KEY_RIGHT_CTRL);
     if (modifiers & DuckyScriptParser::MOD_SHIFT_RIGHT) Keyboard.press(KEY_RIGHT_SHIFT);
     if (modifiers & DuckyScriptParser::MOD_ALT_RIGHT) Keyboard.press(KEY_RIGHT_ALT);
@@ -66,6 +71,7 @@ void MeowUSBDevice::sendKey(uint8_t key, uint8_t modifiers) {
     // Press key
     if (key != 0) {
         Keyboard.press(key);
+        Serial.println("DEBUG: Pressed key " + String(key, HEX));
     }
 
     // Hold for a moment to ensure host registers it
@@ -90,14 +96,6 @@ void MeowUSBDevice::sendKeySequence(const String& keys) {
     
     // This is a placeholder for complex sequence handling if needed
     // For now, we assume sendKey covers the main use cases
-}
-
-void MeowUSBDevice::moveMouse(int8_t x, int8_t y) {
-    // Mouse functionality disabled
-}
-
-void MeowUSBDevice::clickMouse(uint8_t buttons) {
-    // Mouse functionality disabled
 }
 
 void MeowUSBDevice::delay(uint32_t ms) {

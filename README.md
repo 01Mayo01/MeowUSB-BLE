@@ -33,7 +33,6 @@ Will be uploaded to M5 Burner
 - `STRINGLN [text]`: Type text and press Enter
 - `KEY [key]`: Press a specific key (e.g., `KEY ENTER`, `KEY F1`)
 - `KEYS [sequence]`: Press a key sequence
-- `MOUSE_CLICK [LEFT|RIGHT|MIDDLE]`: Click mouse button
 - `DEFAULTDELAY [ms]`: Set default delay between commands
 
 ## Hardware Requirements

@@ -163,14 +163,6 @@ void BluetoothHIDDevice::sendKeySequence(const String& keys) {
     Serial.println("BLE Key Sequence: " + keys);
 }
 
-void BluetoothHIDDevice::moveMouse(int8_t x, int8_t y) {
-    // Mouse functionality not needed
-}
-
-void BluetoothHIDDevice::clickMouse(uint8_t buttons) {
-    // Mouse functionality not needed
-}
-
 void BluetoothHIDDevice::delay(uint32_t ms) {
     ::delay(ms);
 }

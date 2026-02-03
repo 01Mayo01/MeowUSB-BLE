@@ -137,10 +137,6 @@ void DuckyScriptParser::executeLine(const String& line) {
         handleKEY(parameters);
     } else if (command == "KEYS") {
         handleKEYS(parameters);
-    } else if (command == "MOUSE_MOVE") {
-        handleMOUSE_MOVE(parameters);
-    } else if (command == "MOUSE_CLICK") {
-        handleMOUSE_CLICK(parameters);
     } else if (command == "DEFAULTDELAY") {
         handleDEFAULTDELAY(parameters);
     } else if (command == "REM_BLOCK") {
@@ -195,21 +191,30 @@ void DuckyScriptParser::handleSTRINGLN(const String& line) {
 }
 
 void DuckyScriptParser::handleKEY(const String& line) {
-    std::vector<String> keyParts = split(line, ' ');
+    std::vector<String> keyParts = splitByWhitespace(line);
     uint8_t key = 0;
     uint8_t keyMods = 0;
     
+    Serial.println("DEBUG: handleKEY processing line: '" + line + "'");
+
     for (const String& part : keyParts) {
+        Serial.println("DEBUG: Processing part: '" + part + "'");
         if (modifiers.find(part.c_str()) != modifiers.end()) {
             keyMods |= modifiers[part.c_str()];
+            Serial.println("DEBUG: Found modifier: " + part + ", val: " + String(modifiers[part.c_str()], HEX) + ", keyMods now: " + String(keyMods, HEX));
         } else if (specialKeys.find(part.c_str()) != specialKeys.end()) {
             key = specialKeys[part.c_str()];
+            Serial.println("DEBUG: Found special key: " + part + ", val: " + String(key, HEX));
         } else if (part.length() == 1) {
             // Single character
             key = part[0];
+            Serial.println("DEBUG: Found char key: " + part + ", val: " + String(key, HEX));
+        } else {
+            Serial.println("DEBUG: Unknown part: " + part);
         }
     }
     
+    Serial.println("DEBUG: Calling sendKey with key: " + String(key, HEX) + ", mods: " + String(keyMods, HEX));
     hidDevice->sendKey(key, keyMods);
     Serial.println("Key: " + line);
 }
@@ -217,26 +222,6 @@ void DuckyScriptParser::handleKEY(const String& line) {
 void DuckyScriptParser::handleKEYS(const String& line) {
     hidDevice->sendKeySequence(line);
     Serial.println("Keys: " + line);
-}
-
-void DuckyScriptParser::handleMOUSE_MOVE(const String& line) {
-    std::vector<String> coords = split(line, ' ');
-    if (coords.size() >= 2) {
-        int x = coords[0].toInt();
-        int y = coords[1].toInt();
-        hidDevice->moveMouse(x, y);
-        Serial.println("Mouse move: " + String(x) + "," + String(y));
-    }
-}
-
-void DuckyScriptParser::handleMOUSE_CLICK(const String& line) {
-    uint8_t buttons = 0;
-    if (line.indexOf("LEFT") != -1) buttons |= 0x01;
-    if (line.indexOf("RIGHT") != -1) buttons |= 0x02;
-    if (line.indexOf("MIDDLE") != -1) buttons |= 0x04;
-    
-    hidDevice->clickMouse(buttons);
-    Serial.println("Mouse click: " + line);
 }
 
 void DuckyScriptParser::handleDEFAULTDELAY(const String& line) {
@@ -277,6 +262,33 @@ std::vector<String> DuckyScriptParser::split(const String& str, char delimiter) 
     // Add last part
     if (start < str.length()) {
         result.push_back(trim(str.substring(start)));
+    }
+    
+    return result;
+}
+
+std::vector<String> DuckyScriptParser::splitByWhitespace(const String& str) {
+    std::vector<String> result;
+    int length = str.length();
+    int start = 0;
+    bool inWord = false;
+    
+    for (int i = 0; i < length; i++) {
+        if (isWhitespace(str[i])) {
+            if (inWord) {
+                result.push_back(str.substring(start, i));
+                inWord = false;
+            }
+        } else {
+            if (!inWord) {
+                start = i;
+                inWord = true;
+            }
+        }
+    }
+    
+    if (inWord) {
+        result.push_back(str.substring(start));
     }
     
     return result;
