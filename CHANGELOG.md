@@ -1,5 +1,8 @@
 # Changelog
 
+## v0.1.2
+- **Fix:** Fixed Bluetooth firmware crashes caused by Watchdog Timer (WDT) timeouts during long string transmission. Added chunked sending with explicit task yielding.
+
 ## v0.1.1
 - **Fix:** Switched Bluetooth stack to NimBLE-Arduino. This resolves persistent crash/instability issues associated with the default Bluedroid stack on ESP32-S3.
 - **Improvement:** Reduced memory usage and improved BLE connection speed.
