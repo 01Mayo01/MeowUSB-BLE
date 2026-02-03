@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.1.4
+- **Fix:** Fixed Bluetooth reconnection loops by relaxing connection interval requirements and allowing the host (PC/Phone) to negotiate its preferred parameters.
+- **Fix:** Removed hardcoded "Min Preferred" advertising settings which were causing some hosts to reject the connection.
+
 ## v0.1.3
 - **Fix:** Improved Bluetooth connection stability by adjusting advertising parameters (min preferred connection intervals) to better support Apple and modern Windows devices.
 - **Fix:** Increased BLE stack stabilization delay during initialization.

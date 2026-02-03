@@ -107,9 +107,35 @@ bool BluetoothHIDDevice::begin(const String& name) {
         // Adjust advertising settings for better connection reliability
         NimBLEAdvertising* pAdvertising = NimBLEDevice::getAdvertising();
         if (pAdvertising) {
-            pAdvertising->setMinPreferred(0x06);  // functions that help with iPhone connection issues 
-            pAdvertising->setMinPreferred(0x12);
+            // Remove preferred parameters as they can cause issues with some hosts
+            // Let the host decide the interval
+            // pAdvertising->setMinPreferred(0x06);
+            // pAdvertising->setMinPreferred(0x12);
+            pAdvertising->setScanResponse(true);
         }
+        
+        // Access underlying NimBLEServer to update connection parameters globally
+        // NOTE: updateConnParams requires a connection handle (desc->conn_handle)
+        // Since we are not connected yet, we can't update connection params for a specific peer.
+        // However, we can set the preferred parameters in the advertising packet (which we did by removing the bad ones)
+        // or wait for a connection callback to update params.
+        
+        // For NimBLE 1.4.1, we can't easily iterate peers without a connection callback.
+        // But we can set the DEFAULT connection parameters for new connections if the library supports it.
+        // NimBLEServer doesn't have a static default params setter exposed easily.
+        
+        // Instead, we will rely on the host to respect the advertising flags (or lack thereof)
+        // and if a connection is established, we can try to update params then.
+        // For now, let's remove the problematic updateConnParams call during begin()
+        // as there are no peers connected yet.
+        
+        /* 
+        NimBLEServer* pServer = NimBLEDevice::getServer();
+        if (pServer) {
+             // This fails because getPeerID(0) is not valid if no peers connected
+             // pServer->updateConnParams(pServer->getPeerID(0), 12, 24, 0, 400); 
+        }
+        */
         
         success = true;
         isStarted = true;
