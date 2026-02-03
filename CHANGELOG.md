@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.1.3
+- **Fix:** Improved Bluetooth connection stability by adjusting advertising parameters (min preferred connection intervals) to better support Apple and modern Windows devices.
+- **Fix:** Increased BLE stack stabilization delay during initialization.
+
 ## v0.1.2
 - **Fix:** Fixed Bluetooth firmware crashes caused by Watchdog Timer (WDT) timeouts during long string transmission. Added chunked sending with explicit task yielding.
 

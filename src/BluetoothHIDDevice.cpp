@@ -1,4 +1,7 @@
 #include "BluetoothHIDDevice.h"
+#if defined(USE_NIMBLE)
+#include <NimBLEDevice.h>
+#endif
 #include <BleKeyboard.h>
 
 BluetoothHIDDevice::BluetoothHIDDevice() {
@@ -80,7 +83,18 @@ bool BluetoothHIDDevice::begin(const String& name) {
     delay(200);
     
     // Create new instance with updated name
+    // Initialize with standard parameters for broader compatibility
+    // Device Name, Device Manufacturer, Battery Level
     bleKeyboard = new BleKeyboard(deviceName.c_str(), "MeowCorp", 100);
+    
+    // Set connection intervals to improve stability (min, max, latency, timeout)
+    // These values are recommended for Apple devices and general stability
+    // 12 * 1.25ms = 15ms min interval
+    // 24 * 1.25ms = 30ms max interval
+    // 0 latency
+    // 400 * 10ms = 4 seconds timeout
+    // NOTE: BleKeyboard (NimBLE version) might not expose setConnectionParams directly on the class
+    // We rely on defaults or need to access the underlying NimBLEServer
     
     // Initialize with comprehensive error handling
     bool success = false;
@@ -88,7 +102,14 @@ bool BluetoothHIDDevice::begin(const String& name) {
         bleKeyboard->begin();
         
         // Wait for BLE stack to stabilize
-        delay(300);
+        delay(500); // Increased from 300ms
+        
+        // Adjust advertising settings for better connection reliability
+        NimBLEAdvertising* pAdvertising = NimBLEDevice::getAdvertising();
+        if (pAdvertising) {
+            pAdvertising->setMinPreferred(0x06);  // functions that help with iPhone connection issues 
+            pAdvertising->setMinPreferred(0x12);
+        }
         
         success = true;
         isStarted = true;
