@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.1.8
+- **Fix:** Fixed `GUI` (Windows/Command) key functionality in Bluetooth mode by using raw HID modifier codes (0x80-0x87) to eliminate library conflicts.
+- **Improvement:** Increased key hold timing (60ms) and added explicit delays (20ms) between modifier press and key press to ensure reliable registration on slower Bluetooth hosts.
+
+## v0.1.7
+- **Fix:** Fixed DuckyScript `GUI` command handling in Bluetooth mode. Previously, commands like `GUI r` were not correctly combining the modifier and the key. Updated parser to strictly associate parameters with the GUI modifier.
+
 ## v0.1.6
 - **Fix:** Re-enabled standard Bluetooth Security (Bonding/Encryption) with "Just Works" pairing. This fixes disconnection loops on hosts (Windows/Android) that require secure HID connections.
 - **Fix:** Set Bluetooth Tx Power to Maximum (9dBm) to rule out signal integrity issues.

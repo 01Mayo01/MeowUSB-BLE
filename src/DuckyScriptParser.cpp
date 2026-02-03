@@ -143,7 +143,14 @@ void DuckyScriptParser::executeLine(const String& line) {
         handleREM_BLOCK(parameters);
     } else if (command == "GUI" || command == "WINDOWS" || command == "COMMAND") {
         // Explicitly handle GUI command which often has parameters like "GUI r"
-        handleKEY(line);
+        if (parameters.length() > 0) {
+             // Treat "GUI r" as "GUI" modifier + "r" key
+             String newCmd = "GUI " + parameters;
+             handleKEY(newCmd);
+        } else {
+             // Just GUI key press
+             handleKEY("GUI");
+        }
     } else if (command == "ENTER") {
         // Explicitly handle ENTER
         handleKEY("ENTER");
