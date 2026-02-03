@@ -1,4 +1,5 @@
 #include "BluetoothHIDDevice.h"
+#include <BleKeyboard.h>
 
 BluetoothHIDDevice::BluetoothHIDDevice() {
     deviceConnected = false;
@@ -25,11 +26,17 @@ bool BluetoothHIDDevice::begin(const String& name) {
     }
     
     // Check if we can reuse the existing instance
-    if (bleKeyboard != nullptr && deviceName == name) {
-        Serial.println("BLE reusing existing instance: " + deviceName);
-        // Ensure advertising is started
-        bleKeyboard->begin();
-        return true;
+    if (bleKeyboard != nullptr) {
+        if (deviceName == name) {
+            Serial.println("BLE reusing existing instance: " + deviceName);
+            // Ensure advertising is started
+            bleKeyboard->begin();
+            deviceConnected = bleKeyboard->isConnected();
+            return true;
+        } else {
+            // Name changed, we MUST re-initialize
+            // This is a heavy operation
+        }
     }
 
     // Set initialization flag
@@ -85,7 +92,7 @@ bool BluetoothHIDDevice::begin(const String& name) {
 
 void BluetoothHIDDevice::end() {
     if (bleKeyboard) {
-        bleKeyboard->stopAdvertising();
+        bleKeyboard->end();
         Serial.println("BLE Keyboard advertising stopped");
     }
 }
@@ -111,25 +118,26 @@ void BluetoothHIDDevice::sendKey(uint8_t key, uint8_t modifiers) {
     
     try {
         // Press modifiers
-        if (modifiers & DuckyScriptParser::MOD_CTRL_LEFT) bleKeyboard->press(BLE_KEY_LEFT_CTRL);
-        if (modifiers & DuckyScriptParser::MOD_SHIFT_LEFT) bleKeyboard->press(BLE_KEY_LEFT_SHIFT);
-        if (modifiers & DuckyScriptParser::MOD_ALT_LEFT) bleKeyboard->press(BLE_KEY_LEFT_ALT);
-        if (modifiers & DuckyScriptParser::MOD_GUI_LEFT) bleKeyboard->press(BLE_KEY_LEFT_GUI);
-        if (modifiers & DuckyScriptParser::MOD_CTRL_RIGHT) bleKeyboard->press(BLE_KEY_RIGHT_CTRL);
-        if (modifiers & DuckyScriptParser::MOD_SHIFT_RIGHT) bleKeyboard->press(BLE_KEY_RIGHT_SHIFT);
-        if (modifiers & DuckyScriptParser::MOD_ALT_RIGHT) bleKeyboard->press(BLE_KEY_RIGHT_ALT);
-        if (modifiers & DuckyScriptParser::MOD_GUI_RIGHT) bleKeyboard->press(BLE_KEY_RIGHT_GUI);
+        if (modifiers & DuckyScriptParser::MOD_CTRL_LEFT) bleKeyboard->press(KEY_LEFT_CTRL);
+        if (modifiers & DuckyScriptParser::MOD_SHIFT_LEFT) bleKeyboard->press(KEY_LEFT_SHIFT);
+        if (modifiers & DuckyScriptParser::MOD_ALT_LEFT) bleKeyboard->press(KEY_LEFT_ALT);
+        if (modifiers & DuckyScriptParser::MOD_GUI_LEFT) bleKeyboard->press(KEY_LEFT_GUI);
+        if (modifiers & DuckyScriptParser::MOD_CTRL_RIGHT) bleKeyboard->press(KEY_RIGHT_CTRL);
+        if (modifiers & DuckyScriptParser::MOD_SHIFT_RIGHT) bleKeyboard->press(KEY_RIGHT_SHIFT);
+        if (modifiers & DuckyScriptParser::MOD_ALT_RIGHT) bleKeyboard->press(KEY_RIGHT_ALT);
+        if (modifiers & DuckyScriptParser::MOD_GUI_RIGHT) bleKeyboard->press(KEY_RIGHT_GUI);
         
         // Press key
         if (key != 0) {
             bleKeyboard->press(key);
-            delay(10);
-            bleKeyboard->release(key);
         }
+
+        // Hold for a moment
+        delay(20);
         
-        // Release modifiers
+        // Release everything
         bleKeyboard->releaseAll();
-        delay(10);
+        delay(20);
     } catch (...) {
         Serial.println("HID operation failed - connection lost");
         deviceConnected = false;

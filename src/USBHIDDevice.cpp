@@ -51,7 +51,7 @@ void MeowUSBDevice::setMode(HIDMode mode) {
 }
 
 void MeowUSBDevice::sendKey(uint8_t key, uint8_t modifiers) {
-    if (!deviceConnected) return;
+    if (!isConnected()) return;
     
     // Press modifiers
     if (modifiers & DuckyScriptParser::MOD_CTRL_LEFT) Keyboard.press(KEY_LEFT_CTRL);
@@ -66,18 +66,20 @@ void MeowUSBDevice::sendKey(uint8_t key, uint8_t modifiers) {
     // Press key
     if (key != 0) {
         Keyboard.press(key);
-        delay(10);
-        Keyboard.release(key);
     }
+
+    // Hold for a moment to ensure host registers it
+    delay(20);
     
-    // Release modifiers
+    // Release everything
     Keyboard.releaseAll();
-    delay(10);
+    delay(20);
 }
 
 void MeowUSBDevice::sendString(const String& text) {
-    if (!deviceConnected) return;
+    if (!isConnected()) return;
     Keyboard.print(text);
+    delay(10); // Small delay after string
 }
 
 void MeowUSBDevice::sendKeySequence(const String& keys) {
@@ -105,5 +107,7 @@ void MeowUSBDevice::delay(uint32_t ms) {
 extern "C" bool tud_mounted(void);
 
 bool MeowUSBDevice::isConnected() {
+    // Prefer TinyUSB mounted status as it's the most reliable source of truth
+    if (tud_mounted()) return true;
     return deviceConnected;
 }

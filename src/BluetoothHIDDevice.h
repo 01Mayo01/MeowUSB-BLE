@@ -3,7 +3,8 @@
 
 #include <Arduino.h>
 #include "DuckyScriptParser.h"
-#include "BleKeyboard.h"
+
+class BleKeyboard;
 
 class BluetoothHIDDevice : public HIDDevice {
 private:

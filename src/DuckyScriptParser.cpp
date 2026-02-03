@@ -2,7 +2,7 @@
 
 DuckyScriptParser::DuckyScriptParser() {
     executionComplete = true;
-    commandDelay = 50; // Default delay between commands
+    commandDelay = 100; // Increased default delay to 100ms for better reliability
     currentLine = 0;
     inCommentBlock = false;
     hidDevice = nullptr;

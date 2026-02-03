@@ -16,6 +16,8 @@
 // Gray color for disabled text
 #define GRAY 0x8410
 
+#define FW_VERSION "v0.0.3"
+
 // Global objects
 MeowUSBDevice usbHid;
 BluetoothHIDDevice btHid;
@@ -160,58 +162,55 @@ void loop() {
 
 void handleKeyboardInput() {
     // Mode Toggle (Tab)
+    // Debounce Tab key
+    static unsigned long lastTabPress = 0;
     if (M5Cardputer.Keyboard.keysState().tab) {
-        useBluetooth = !useBluetooth;
-        
-        // Handle Bluetooth advertising toggle
-        if (useBluetooth) {
-            // Show Bluetooth booting status
-            M5Cardputer.Display.fillRect(0, 80, M5Cardputer.Display.width(), 20, BLACK);
-            M5Cardputer.Display.setCursor(0, 80);
-            M5Cardputer.Display.setTextColor(BLUE);
-            M5Cardputer.Display.println("Bluetooth booting...");
-            M5Cardputer.Display.setTextColor(WHITE);
+        if (millis() - lastTabPress > 500) {
+            lastTabPress = millis();
+            useBluetooth = !useBluetooth;
             
-            // Force display update
-            M5Cardputer.Display.display();
-            
-            // Add safety delay before initialization
-            delay(200);
-            
-            // Start Bluetooth advertising with configured name
-            String btName = configManager.getBluetoothName();
-            bool success = btHid.begin(btName);
-            
-            if (success) {
-                Serial.println("Bluetooth advertising started: " + btName);
-                
-                // Extended wait for BLE stack to stabilize
-                delay(1000);
-                
-                // Update status
+            // Handle Bluetooth advertising toggle
+            if (useBluetooth) {
+                // Show Bluetooth booting status
                 M5Cardputer.Display.fillRect(0, 80, M5Cardputer.Display.width(), 20, BLACK);
                 M5Cardputer.Display.setCursor(0, 80);
-                M5Cardputer.Display.setTextColor(GREEN);
-                M5Cardputer.Display.println("Bluetooth ready!");
+                M5Cardputer.Display.setTextColor(BLUE);
+                M5Cardputer.Display.println("Bluetooth booting...");
                 M5Cardputer.Display.setTextColor(WHITE);
+                
+                // Force display update
                 M5Cardputer.Display.display();
-                delay(500);
+                
+                // Start Bluetooth advertising with configured name if not already running
+                String btName = configManager.getBluetoothName();
+                bool success = btHid.begin(btName);
+                
+                if (success) {
+                    Serial.println("Bluetooth advertising started: " + btName);
+                    
+                    // Update status
+                    M5Cardputer.Display.fillRect(0, 80, M5Cardputer.Display.width(), 20, BLACK);
+                    M5Cardputer.Display.setCursor(0, 80);
+                    M5Cardputer.Display.setTextColor(GREEN);
+                    M5Cardputer.Display.println("Bluetooth ready!");
+                    M5Cardputer.Display.setTextColor(WHITE);
+                    M5Cardputer.Display.display();
+                    delay(500);
+                } else {
+                    Serial.println("Bluetooth initialization failed!");
+                    showError("BT Init Failed");
+                    delay(1000);
+                    useBluetooth = false; // Revert to USB mode
+                }
             } else {
-                Serial.println("Bluetooth initialization failed!");
-                showError("BT Init Failed");
-                delay(1000);
-                useBluetooth = false; // Revert to USB mode
+                // Switching to USB Mode
+                // DO NOT stop Bluetooth to prevent crash/instability
+                Serial.println("Switched to USB Mode (BLE remains active in bg)");
             }
-        } else {
-            // Stop Bluetooth advertising with safety delay
-            btHid.end();
-            delay(300); // Allow BLE stack to shutdown properly
-            Serial.println("Bluetooth advertising stopped");
+            
+            showMainMenu();
+            return;
         }
-        
-        showMainMenu();
-        delay(300);
-        return;
     }
 
     // Navigation
@@ -604,6 +603,11 @@ void drawBatteryStatus() {
         M5Cardputer.Display.print(batteryLevel);
         M5Cardputer.Display.setTextColor(WHITE);
         M5Cardputer.Display.print("%]");
+        
+        // Draw Version
+        M5Cardputer.Display.setCursor(x, y + 10);
+        M5Cardputer.Display.setTextColor(GRAY);
+        M5Cardputer.Display.print(FW_VERSION);
     }
 }
 
