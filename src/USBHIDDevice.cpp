@@ -105,5 +105,5 @@ void MeowUSBDevice::delay(uint32_t ms) {
 extern "C" bool tud_mounted(void);
 
 bool MeowUSBDevice::isConnected() {
-    return tud_mounted();
+    return deviceConnected;
 }

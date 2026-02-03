@@ -24,6 +24,14 @@ bool BluetoothHIDDevice::begin(const String& name) {
         return false;
     }
     
+    // Check if we can reuse the existing instance
+    if (bleKeyboard != nullptr && deviceName == name) {
+        Serial.println("BLE reusing existing instance: " + deviceName);
+        // Ensure advertising is started
+        bleKeyboard->begin();
+        return true;
+    }
+
     // Set initialization flag
     isInitializing = true;
     initStartTime = millis();
@@ -31,7 +39,7 @@ bool BluetoothHIDDevice::begin(const String& name) {
     // Set device name first
     deviceName = name;
     
-    // If keyboard already exists, clean it up properly with longer delay
+    // If keyboard already exists with different name, clean it up
     if (bleKeyboard) {
         isShuttingDown = true;
         bleKeyboard->end();
