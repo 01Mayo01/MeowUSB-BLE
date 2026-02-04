@@ -1,6 +1,7 @@
 # MeowUSB-BLE: M5 Cardputer DuckyScript Executor
 
 Firmware for M5 Cardputer that executes DuckyScript payloads via USB and Bluetooth, featuring a cat-themed interface.
+Here's a youtube tutorial and demonstration: https://youtu.be/wOJ4ampDzwI
 
 ## Features
 
