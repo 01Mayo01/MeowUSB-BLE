@@ -34,6 +34,7 @@ Will be uploaded to M5 Burner
 - `KEY [key]`: Press a specific key (e.g., `KEY ENTER`, `KEY F1`)
 - `KEYS [sequence]`: Press a key sequence
 - `DEFAULTDELAY [ms]`: Set default delay between commands
+- `GUI`: Emulates Windows key
 
 ## Hardware Requirements
 - M5Stack Cardputer (ESP32-S3)
