@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.1.9
+- **Fix:** Addressed inconsistent `GUI` command behavior in Bluetooth mode by significantly increasing timing delays.
+- **Improvement:** Increased modifier press delay (20ms -> 100ms), key hold time (60ms -> 100ms), and release delay (30ms -> 100ms) to ensure reliable registration on all hosts.
+
 ## v0.1.8
 - **Fix:** Fixed `GUI` (Windows/Command) key functionality in Bluetooth mode by using raw HID modifier codes (0x80-0x87) to eliminate library conflicts.
 - **Improvement:** Increased key hold timing (60ms) and added explicit delays (20ms) between modifier press and key press to ensure reliable registration on slower Bluetooth hosts.

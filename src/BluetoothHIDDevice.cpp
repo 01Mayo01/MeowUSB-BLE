@@ -209,11 +209,11 @@ void BluetoothHIDDevice::sendKey(uint8_t key, uint8_t modifiers) {
         // What about "GUI"? Just press and release GUI? Yes.
         
         // Hold for a moment - increased for reliability
-        delay(60);
+        delay(100);
         
         // Release everything
         bleKeyboard->releaseAll();
-        delay(30);
+        delay(100);
     } catch (...) {
         Serial.println("HID operation failed - connection lost");
         deviceConnected = false;
