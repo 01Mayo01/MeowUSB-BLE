@@ -30,6 +30,15 @@ void PayloadManager::scanDirectory(fs::FS &fs, const String& path) {
     
     File file = root.openNextFile();
     while (file) {
+        // Watchdog prevention for large directories
+        delay(10); 
+        
+        if (currentFiles.size() >= MAX_FILES) {
+            Serial.println("Max file limit reached!");
+            file.close(); // Ensure current file is closed
+            break;
+        }
+
         FileEntry entry;
         String fileName = String(file.name());
         
@@ -41,6 +50,10 @@ void PayloadManager::scanDirectory(fs::FS &fs, const String& path) {
         entry.isDir = file.isDirectory();
         
         currentFiles.push_back(entry);
+        
+        // Close current file handle before opening next
+        file.close();
+        
         file = root.openNextFile();
     }
     root.close();

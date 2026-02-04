@@ -27,6 +27,8 @@ private:
     
     void scanDirectory(fs::FS &fs, const String& path);
 
+    static const size_t MAX_FILES = 100; // Limit to prevent OOM/Freezes
+
 public:
     PayloadManager();
     bool begin();

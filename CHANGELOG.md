@@ -1,5 +1,14 @@
 # Changelog
 
+## v0.2.2
+- **Fix:** Reduced directory file limit to 100 to prevent freezes on large folders.
+- **Fix:** Added explicit `file.close()` in scanning loop to prevent file handle leaks.
+- **Fix:** Increased directory scanning delay to 10ms for better WDT compliance.
+
+## v0.2.1
+- **Fix:** Fixed firmware freeze when opening directories with many files. Added `delay(1)` yield during directory scanning to prevent Watchdog Timer (WDT) resets.
+- **Improvement:** Implemented a safety limit of 250 files per directory to prevent Out-Of-Memory (OOM) crashes.
+
 ## v0.2.0
 - **Feature:** Major Bluetooth HID reliability upgrade. Implemented `pressRaw()` in `BleKeyboard` library to support Atomic HID Reports.
 - **Fix:** Fixed `GUI` (Windows) command failure by sending Modifiers and Keys in a single report, eliminating state desynchronization issues on Windows hosts.
