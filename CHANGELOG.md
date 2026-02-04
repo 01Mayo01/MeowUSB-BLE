@@ -1,5 +1,15 @@
 # Changelog
 
+## v0.2.0
+- **Feature:** Major Bluetooth HID reliability upgrade. Implemented `pressRaw()` in `BleKeyboard` library to support Atomic HID Reports.
+- **Fix:** Fixed `GUI` (Windows) command failure by sending Modifiers and Keys in a single report, eliminating state desynchronization issues on Windows hosts.
+- **Improvement:** Reduced HID report chatter by consolidating separate modifier and key events into atomic operations.
+
+## v0.1.10
+- **Fix:** Enhanced Bluetooth HID `GUI` command reliability. Added `releaseAll()` call before every key sequence to ensure clean HID state.
+- **Fix:** Improved DuckyScript parameter parsing by trimming extra whitespace from parameters.
+- **Debug:** Added verbose serial logging for BLE modifier and key press events to assist in troubleshooting.
+
 ## v0.1.9
 - **Fix:** Addressed inconsistent `GUI` command behavior in Bluetooth mode by significantly increasing timing delays.
 - **Improvement:** Increased modifier press delay (20ms -> 100ms), key hold time (60ms -> 100ms), and release delay (30ms -> 100ms) to ensure reliable registration on all hosts.

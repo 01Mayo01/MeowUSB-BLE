@@ -139,10 +139,29 @@ String PayloadManager::loadFile(const String& filename) {
     File file = fs->open(fullPath, FILE_READ);
     if (!file) return "";
     
+    // Safety check for file size to prevent OOM
+    if (file.size() > 20000) { // Limit RAM loading to ~20KB
+        Serial.println("File too large for RAM loading!");
+        file.close();
+        return "";
+    }
+    
     String content = "";
     while (file.available()) {
         content += (char)file.read();
     }
     file.close();
     return content;
+}
+
+File PayloadManager::openFile(const String& filename) {
+    if (currentStorage == STORAGE_ROOT_SELECT) return File();
+    
+    String fullPath = currentPath;
+    if (fullPath != "/") fullPath += "/";
+    fullPath += filename;
+    
+    fs::FS* fs = (currentStorage == STORAGE_SD) ? (fs::FS*)&SD : (fs::FS*)&LittleFS;
+    
+    return fs->open(fullPath, FILE_READ);
 }

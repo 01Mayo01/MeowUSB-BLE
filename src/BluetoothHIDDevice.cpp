@@ -179,34 +179,11 @@ void BluetoothHIDDevice::sendKey(uint8_t key, uint8_t modifiers) {
     }
     
     try {
-        // Press modifiers
-        if (modifiers & DuckyScriptParser::MOD_CTRL_LEFT) bleKeyboard->press(RAW_KEY_LEFT_CTRL);
-        if (modifiers & DuckyScriptParser::MOD_SHIFT_LEFT) bleKeyboard->press(RAW_KEY_LEFT_SHIFT);
-        if (modifiers & DuckyScriptParser::MOD_ALT_LEFT) bleKeyboard->press(RAW_KEY_LEFT_ALT);
-        if (modifiers & DuckyScriptParser::MOD_GUI_LEFT) bleKeyboard->press(RAW_KEY_LEFT_GUI);
-        if (modifiers & DuckyScriptParser::MOD_CTRL_RIGHT) bleKeyboard->press(RAW_KEY_RIGHT_CTRL);
-        if (modifiers & DuckyScriptParser::MOD_SHIFT_RIGHT) bleKeyboard->press(RAW_KEY_RIGHT_SHIFT);
-        if (modifiers & DuckyScriptParser::MOD_ALT_RIGHT) bleKeyboard->press(RAW_KEY_RIGHT_ALT);
-        if (modifiers & DuckyScriptParser::MOD_GUI_RIGHT) bleKeyboard->press(RAW_KEY_RIGHT_GUI);
+        // Use atomic pressRaw method to send Modifiers + Key in a single HID report
+        // This avoids issues where modifiers are sent separately or timing issues occur
         
-        // Small delay to ensure modifiers are registered by host
-        if (modifiers != 0) delay(20);
-        
-        // Press key (if it's not 0)
-        if (key != 0) {
-            // Check if key is one of the modifiers we already pressed?
-            // DuckyScript parser might pass a modifier code as the 'key' argument if it was a standalone modifier command
-            // e.g. "GUI" command -> key = DUCKY_GUI (which might be mapped to KEY_LEFT_GUI)
-            
-            // Just press it. BleKeyboard handles duplicate presses gracefully usually.
-            bleKeyboard->press(key);
-        }
-        
-        // If no key but we have modifiers, we need to release them after delay
-        // But wait, DuckyScript "GUI r" means Hold GUI, Press r, Release r, Release GUI
-        // Our current logic: Press GUI, Press r, Release All. This is correct for "GUI r".
-        
-        // What about "GUI"? Just press and release GUI? Yes.
+        Serial.println("BLE: Atomic sendKey: " + String(key, HEX) + " Mods: " + String(modifiers, HEX));
+        bleKeyboard->pressRaw(key, modifiers);
         
         // Hold for a moment - increased for reliability
         delay(100);

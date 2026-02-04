@@ -125,6 +125,7 @@ void DuckyScriptParser::executeLine(const String& line) {
     int spaceIndex = trimmedLine.indexOf(' ');
     String command = (spaceIndex != -1) ? trimmedLine.substring(0, spaceIndex) : trimmedLine;
     String parameters = (spaceIndex != -1) ? trimmedLine.substring(spaceIndex + 1) : "";
+    parameters = trim(parameters);
     
     // Execute command
     if (command == "DELAY") {

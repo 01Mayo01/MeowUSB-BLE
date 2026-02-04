@@ -43,6 +43,7 @@ public:
     
     // File Operations
     String loadFile(const String& filename);
+    File openFile(const String& filename); // Open file for streaming
     
     void refresh();
 };
