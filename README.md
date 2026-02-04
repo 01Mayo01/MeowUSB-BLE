@@ -11,8 +11,8 @@ Firmware for M5 Cardputer that executes DuckyScript payloads via USB and Bluetoo
 - **Cat-Themed UI**: Meeowwww :3
 
 ## Installation
-
-Will be uploaded to M5 Burner
+IF USING M5 LAUNCHER: Download the .bin and place in your sd card, and install
+IF NOT USING M5 LAUNCHER: Will be uploaded to M5 Burner
 
 ## Usage
 
