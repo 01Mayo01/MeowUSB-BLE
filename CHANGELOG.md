@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.2.3
+- **Fix:** Addressed Bluetooth mode switching instability. Now explicitly stops advertising before applying security/power settings and restarts it, ensuring proper BLE stack configuration.
+- **Improvement:** Optimized BLE initialization timing to reduce main loop blocking.
+
 ## v0.2.2
 - **Fix:** Reduced directory file limit to 100 to prevent freezes on large folders.
 - **Fix:** Added explicit `file.close()` in scanning loop to prevent file handle leaks.

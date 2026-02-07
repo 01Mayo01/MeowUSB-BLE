@@ -109,10 +109,15 @@ bool BluetoothHIDDevice::begin(const String& name) {
         bleKeyboard->begin();
         
         // Wait for BLE stack to stabilize
-        delay(500); // Increased from 300ms
+        delay(100);
         
-        // Adjust advertising settings for better connection reliability
+        // STOP Advertising to apply settings safely
         NimBLEAdvertising* pAdvertising = NimBLEDevice::getAdvertising();
+        if (pAdvertising) {
+            pAdvertising->stop();
+        }
+
+        // Adjust advertising settings for better connection reliability
         if (pAdvertising) {
             // Force advertising response to be true to help discovery
             pAdvertising->setScanResponse(true);
@@ -128,6 +133,11 @@ bool BluetoothHIDDevice::begin(const String& name) {
         
         // Set Tx Power to Maximum (ESP_PWR_LVL_P9 = 9dBm)
         NimBLEDevice::setPower(ESP_PWR_LVL_P9); 
+        
+        // Restart Advertising with new settings
+        if (pAdvertising) {
+            pAdvertising->start();
+        }
         
         success = true;
         isStarted = true;
