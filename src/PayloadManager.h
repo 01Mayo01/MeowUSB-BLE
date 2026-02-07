@@ -39,7 +39,7 @@ public:
     void selectStorage(StorageType type);
     
     // Getters
-    std::vector<FileEntry> getFileList();
+    std::vector<FileEntry> getFileList(String extensionFilter = "");
     String getCurrentPath();
     StorageType getCurrentStorage();
     
