@@ -1,5 +1,6 @@
 # Changelog
 
+<<<<<<< HEAD
 ## v0.3.0
 - **New Feature:** Added comprehensive WiFi Penetration Testing suite:
   - **WiFi Scan:** Scan and list nearby Access Points with RSSI and Encryption status.
@@ -13,6 +14,8 @@
 - **Fix:** Addressed Bluetooth mode switching instability. Now explicitly stops advertising before applying security/power settings and restarts it, ensuring proper BLE stack configuration.
 - **Improvement:** Optimized BLE initialization timing to reduce main loop blocking.
 
+=======
+>>>>>>> parent of 2a37424 (0.2.3)
 ## v0.2.2
 - **Fix:** Reduced directory file limit to 100 to prevent freezes on large folders.
 - **Fix:** Added explicit `file.close()` in scanning loop to prevent file handle leaks.

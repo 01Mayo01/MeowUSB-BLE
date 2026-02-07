@@ -11,7 +11,12 @@
 
 #define PINK 0xFE19
 #define GRAY 0x8410
+<<<<<<< HEAD
 #define FW_VERSION "v0.3.9-fix2"
+=======
+
+#define FW_VERSION "v0.2.2"
+>>>>>>> parent of 2a37424 (0.2.3)
 
 // Global objects
 MeowUSBDevice usbHid;
