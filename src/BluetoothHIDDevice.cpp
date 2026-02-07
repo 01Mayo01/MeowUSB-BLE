@@ -161,11 +161,24 @@ bool BluetoothHIDDevice::begin(const String& name) {
 }
 
 void BluetoothHIDDevice::end() {
-    if (bleKeyboard) {
-        // Do NOT call bleKeyboard->end() as it causes instability
-        // bleKeyboard->end();
-        Serial.println("BLE Keyboard 'stopped' (stack kept active)");
-        // We don't change isStarted to false because the stack is still up
+    if (isStarted) {
+        if (bleKeyboard) {
+            bleKeyboard->end(); 
+            delay(500); // Allow tasks to finish
+            
+            // NimBLE cleanup to free radio for WiFi
+            #if defined(USE_NIMBLE)
+            // Check if initialized before deinit to avoid crashes
+            if (NimBLEDevice::getInitialized()) {
+                NimBLEDevice::deinit(true);
+            }
+            #endif
+            
+            delete bleKeyboard;
+            bleKeyboard = nullptr;
+        }
+        isStarted = false;
+        Serial.println("BLE Keyboard stopped and de-initialized");
     }
 }
 

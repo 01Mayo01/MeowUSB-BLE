@@ -1,5 +1,14 @@
 # Changelog
 
+## v0.3.0
+- **New Feature:** Added comprehensive WiFi Penetration Testing suite:
+  - **WiFi Scan:** Scan and list nearby Access Points with RSSI and Encryption status.
+  - **Deauth Attack:** Target specific APs to disconnect clients (broadcast deauth).
+  - **Evil Portal:** Create a clone Open AP with a captive portal to harvest credentials.
+  - **Karma Attack:** (Placeholder) Framework added for responding to probe requests.
+- **New UI:** Redesigned Main Menu with "BadUSB/BLE" and "WiFi Pentest" categories.
+- **Theme:** Enhanced "MeowTool" cat-themed interface across all menus.
+
 ## v0.2.3
 - **Fix:** Addressed Bluetooth mode switching instability. Now explicitly stops advertising before applying security/power settings and restarts it, ensuring proper BLE stack configuration.
 - **Improvement:** Optimized BLE initialization timing to reduce main loop blocking.
