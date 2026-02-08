@@ -256,25 +256,6 @@ String DuckyScriptParser::trim(const String& str) {
     return str.substring(start, end - start + 1);
 }
 
-std::vector<String> DuckyScriptParser::split(const String& str, char delimiter) {
-    std::vector<String> result;
-    int start = 0;
-    int end = str.indexOf(delimiter);
-    
-    while (end != -1) {
-        result.push_back(trim(str.substring(start, end)));
-        start = end + 1;
-        end = str.indexOf(delimiter, start);
-    }
-    
-    // Add last part
-    if (start < str.length()) {
-        result.push_back(trim(str.substring(start)));
-    }
-    
-    return result;
-}
-
 std::vector<String> DuckyScriptParser::splitByWhitespace(const String& str) {
     std::vector<String> result;
     int length = str.length();

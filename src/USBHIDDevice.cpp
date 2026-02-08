@@ -4,7 +4,6 @@ MeowUSBDevice* MeowUSBDevice::instance = nullptr;
 
 void MeowUSBDevice::usbEventCallback(void* arg, esp_event_base_t event_base, int32_t event_id, void* event_data) {
     if (event_base == ARDUINO_USB_EVENTS) {
-        arduino_usb_event_data_t * data = (arduino_usb_event_data_t*)event_data;
         switch (event_id) {
             case ARDUINO_USB_STARTED_EVENT:
                 Serial.println("USB Started");

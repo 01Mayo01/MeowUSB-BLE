@@ -16,11 +16,6 @@ private:
     static MeowUSBDevice* instance;
     static void usbEventCallback(void* arg, esp_event_base_t event_base, int32_t event_id, void* event_data);
     
-    // Keyboard report
-    uint8_t keyReport[8];
-    
-    void sendKeyboardReport();
-    
 public:
     MeowUSBDevice();
     bool begin();

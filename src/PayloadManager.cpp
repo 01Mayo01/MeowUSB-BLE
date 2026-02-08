@@ -121,12 +121,6 @@ bool PayloadManager::navigateDown(const String& name) {
     return false;
 }
 
-void PayloadManager::selectStorage(StorageType type) {
-    currentStorage = type;
-    currentPath = "/";
-    refresh();
-}
-
 std::vector<FileEntry> PayloadManager::getFileList() {
     return currentFiles;
 }
@@ -134,10 +128,6 @@ std::vector<FileEntry> PayloadManager::getFileList() {
 String PayloadManager::getCurrentPath() {
     if (currentStorage == STORAGE_ROOT_SELECT) return "Select Drive";
     return currentPath;
-}
-
-StorageType PayloadManager::getCurrentStorage() {
-    return currentStorage;
 }
 
 String PayloadManager::loadFile(const String& filename) {
@@ -165,16 +155,4 @@ String PayloadManager::loadFile(const String& filename) {
     }
     file.close();
     return content;
-}
-
-File PayloadManager::openFile(const String& filename) {
-    if (currentStorage == STORAGE_ROOT_SELECT) return File();
-    
-    String fullPath = currentPath;
-    if (fullPath != "/") fullPath += "/";
-    fullPath += filename;
-    
-    fs::FS* fs = (currentStorage == STORAGE_SD) ? (fs::FS*)&SD : (fs::FS*)&LittleFS;
-    
-    return fs->open(fullPath, FILE_READ);
 }

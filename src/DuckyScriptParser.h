@@ -47,10 +47,7 @@ private:
     
     // Utility functions
     String trim(const String& str);
-    std::vector<String> split(const String& str, char delimiter);
     std::vector<String> splitByWhitespace(const String& str);
-    uint8_t parseKey(const String& keyName);
-    uint8_t parseModifiers(const String& modifierStr);
     bool isWhitespace(char c);
     
 public:

@@ -36,16 +36,13 @@ public:
     // Navigation
     void navigateUp();
     bool navigateDown(const String& name);
-    void selectStorage(StorageType type);
     
     // Getters
     std::vector<FileEntry> getFileList();
     String getCurrentPath();
-    StorageType getCurrentStorage();
     
     // File Operations
     String loadFile(const String& filename);
-    File openFile(const String& filename); // Open file for streaming
     
     void refresh();
 };

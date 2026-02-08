@@ -1,5 +1,4 @@
 #include <M5Cardputer.h>
-#include <ArduinoJson.h>
 #include <SD.h>
 #include <SPI.h>
 #include <LittleFS.h>
@@ -16,7 +15,7 @@
 // Gray color for disabled text
 #define GRAY 0x8410
 
-#define FW_VERSION "v0.2.5"
+#define FW_VERSION "v0.2.6"
 
 // Global objects
 MeowUSBDevice usbHid;
@@ -561,9 +560,6 @@ void showMainMenu() {
     }
     
     // Footer
-    // M5Cardputer.Display.setCursor(0, M5Cardputer.Display.height() - 10);
-    // M5Cardputer.Display.setTextColor(YELLOW);
-    // M5Cardputer.Display.print("ENT:Run/Open ESC:Back");
     
     // Add help text for R key
     M5Cardputer.Display.setCursor(0, M5Cardputer.Display.height() - 20);
