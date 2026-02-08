@@ -127,25 +127,8 @@ void PayloadManager::selectStorage(StorageType type) {
     refresh();
 }
 
-std::vector<FileEntry> PayloadManager::getFileList(String extensionFilter) {
-    if (extensionFilter == "") return currentFiles;
-
-    std::vector<FileEntry> filtered;
-    String extUpper = extensionFilter;
-    extUpper.toUpperCase();
-    
-    for (const auto& file : currentFiles) {
-        if (file.isDir) {
-            filtered.push_back(file);
-        } else {
-            String fileNameUpper = file.name;
-            fileNameUpper.toUpperCase();
-            if (fileNameUpper.endsWith(extUpper)) {
-                filtered.push_back(file);
-            }
-        }
-    }
-    return filtered;
+std::vector<FileEntry> PayloadManager::getFileList() {
+    return currentFiles;
 }
 
 String PayloadManager::getCurrentPath() {
