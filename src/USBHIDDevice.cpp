@@ -8,7 +8,6 @@ void MeowUSBDevice::usbEventCallback(void* arg, esp_event_base_t event_base, int
         switch (event_id) {
             case ARDUINO_USB_STARTED_EVENT:
                 Serial.println("USB Started");
-                if (instance) instance->setConnected(true); // Optimistic: assume connected when started
                 break;
             case ARDUINO_USB_STOPPED_EVENT:
                 Serial.println("USB Stopped");
@@ -41,7 +40,6 @@ bool MeowUSBDevice::begin() {
     USB.begin();
     
     Serial.println("USB HID initialized");
-    // deviceConnected will be set by callback
     return true;
 }
 

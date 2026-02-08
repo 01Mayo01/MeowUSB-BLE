@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.2.5
+- **Fix:** Fixed USB "instability" by removing the optimistic connection flag in `ARDUINO_USB_STARTED_EVENT`. The device now waits for explicit host enumeration (`tud_mounted()`) or Resume events before considering itself connected.
+- **Fix:** Handled USB Suspend/Resume events to correctly update connection status when the host sleeps or wakes up.
+
 ## v0.2.4
 - **Fix:** Fixed USB connection inconsistency by strictly relying on `tud_mounted()` for connection state checks. This prevents the device from attempting to send keystrokes before the host has fully enumerated the USB HID device.
 - **Fix:** Added `releaseAll()` before every USB key transmission to ensure a clean state.
