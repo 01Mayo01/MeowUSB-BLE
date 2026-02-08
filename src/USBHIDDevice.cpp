@@ -105,7 +105,8 @@ void MeowUSBDevice::delay(uint32_t ms) {
 extern "C" bool tud_mounted(void);
 
 bool MeowUSBDevice::isConnected() {
-    // Prefer TinyUSB mounted status as it's the most reliable source of truth
-    if (tud_mounted()) return true;
-    return deviceConnected;
+    // Strictly rely on TinyUSB mounted status
+    // deviceConnected flag is only an indication that the USB stack has started, 
+    // but not necessarily that we are enumerated and ready to talk to the host.
+    return tud_mounted();
 }

@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.2.4
+- **Fix:** Fixed USB connection inconsistency by strictly relying on `tud_mounted()` for connection state checks. This prevents the device from attempting to send keystrokes before the host has fully enumerated the USB HID device.
+- **Fix:** Added `releaseAll()` before every USB key transmission to ensure a clean state.
+
 ## v0.2.3
 - **Fix:** Addressed Bluetooth mode switching instability. Now explicitly stops advertising before applying security/power settings and restarts it, ensuring proper BLE stack configuration.
 - **Improvement:** Optimized BLE initialization timing to reduce main loop blocking.

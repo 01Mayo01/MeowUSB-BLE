@@ -16,7 +16,7 @@
 // Gray color for disabled text
 #define GRAY 0x8410
 
-#define FW_VERSION "v0.2.3"
+#define FW_VERSION "v0.2.4"
 
 // Global objects
 MeowUSBDevice usbHid;
